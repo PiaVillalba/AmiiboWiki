@@ -10,26 +10,31 @@
  *
  */
 
-apply from: "../gradlescripts/shared.gradle"
+package com.oscarg798.amiibowiki.amiibodetail.ui
 
+import androidx.compose.material.Typography
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
-android {
-
-    packagingOptions {
-        exclude 'META-INF/metadata.kotlin_module'
-    }
-}
-
-dependencies {
-    implementation files('libs/YouTubeAndroidPlayerApi.jar')
-
-    implementation cardView
-    implementation shimmer
-    implementation picasso
-    implementation viewPager
-
-    implementation project(path: ':core')
-    implementation project(path: ':network')
-    
-    testImplementation project(path: ':testutils')
-}
+// Set of Material typography styles to start with
+val typography = Typography(
+    body1 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    )
+    /* Other default text styles to override
+    button = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.W500,
+        fontSize = 14.sp
+    ),
+    caption = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    )
+    */
+)

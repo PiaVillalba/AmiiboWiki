@@ -10,26 +10,36 @@
  *
  */
 
-apply from: "../gradlescripts/shared.gradle"
+package com.oscarg798.amiibowiki.amiibodetail.ui
 
+import androidx.compose.ui.graphics.Color
 
-android {
+val silver_chali = "#AAAAAA".toColor()
+val white = "#ffffff".toColor()
 
-    packagingOptions {
-        exclude 'META-INF/metadata.kotlin_module'
-    }
-}
+val mine_shaft_700 = "#616161".toColor()
+val mine_shaft_800 = "#424242".toColor()
+val mine_shaft_900 = "#212121".toColor()
 
-dependencies {
-    implementation files('libs/YouTubeAndroidPlayerApi.jar')
+val manatee = "#919099".toColor()
+val steel_gray = "#1A1824".toColor()
+val alto = "#E0E0E0".toColor()
 
-    implementation cardView
-    implementation shimmer
-    implementation picasso
-    implementation viewPager
+val white_lilac = "#F8F9FC".toColor()
+val royal_blue = "#4363F6".toColor()
 
-    implementation project(path: ':core')
-    implementation project(path: ':network')
-    
-    testImplementation project(path: ':testutils')
-}
+val shark = "#25272A".toColor()
+val shark_800 = "#1B1C1F".toColor()
+
+val alabaster_50 = "#4363f6".toColor()
+val alabaster_100 = "#F5F5F5".toColor()
+val alabaster_200 = "#EEEEEE".toColor()
+
+val cinnabar = "#EB322C".toColor()
+val atlantis = "#A7C73E".toColor()
+val picton_blue = "#4AAAE6".toColor()
+val viridian = "#3A8365".toColor()
+val tulip_tree = "#F1AF3D".toColor()
+val cerise = "#D63080".toColor()
+
+private fun String.toColor() = Color(android.graphics.Color.parseColor(this))

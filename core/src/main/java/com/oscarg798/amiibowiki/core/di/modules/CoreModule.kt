@@ -27,6 +27,7 @@ import com.oscarg798.amiibowiki.core.utils.CoroutineContextProvider
 import com.oscarg798.amiibowiki.core.utils.ResourceProvider
 import com.oscarg798.amiibowiki.core.utils.StringResourceProvider
 import com.oscarg798.amiibowiki.network.di.qualifiers.AmiiboApiQualifier
+import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,6 +40,8 @@ import retrofit2.Retrofit
 @Module
 @InstallIn(ApplicationComponent::class)
 object CoreModule {
+
+    lateinit var picasso: Picasso
 
     @DatabaseName
     @Provides

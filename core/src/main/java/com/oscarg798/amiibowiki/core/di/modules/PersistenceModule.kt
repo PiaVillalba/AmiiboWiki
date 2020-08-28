@@ -20,6 +20,7 @@ import com.oscarg798.amiibowiki.core.persistence.dao.AmiiboDAO
 import com.oscarg798.amiibowiki.core.persistence.dao.AmiiboTypeDAO
 import com.oscarg798.amiibowiki.core.persistence.dao.GameDAO
 import com.oscarg798.amiibowiki.core.persistence.database.CoreAmiiboDatabase
+import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,6 +44,7 @@ object PersistenceModule {
         @DatabaseName
         databaseName: String
     ): CoreAmiiboDatabase {
+        CoreModule.picasso = Picasso.with(context)
         return Room.databaseBuilder(
             context,
             CoreAmiiboDatabase::class.java,

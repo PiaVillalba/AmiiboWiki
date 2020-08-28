@@ -10,26 +10,41 @@
  *
  */
 
-apply from: "../gradlescripts/shared.gradle"
+package com.oscarg798.amiibowiki.amiibodetail
 
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Text
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.setContent
+import androidx.ui.tooling.preview.Preview
+import com.oscarg798.amiibowiki.amiibodetail.ui.AppTheme
 
-android {
-
-    packagingOptions {
-        exclude 'META-INF/metadata.kotlin_module'
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            AppTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(color = MaterialTheme.colors.background) {
+                    Greeting("Android")
+                }
+            }
+        }
     }
 }
 
-dependencies {
-    implementation files('libs/YouTubeAndroidPlayerApi.jar')
+@Composable
+fun Greeting(name: String) {
+    Text(text = "Hello $name!")
+}
 
-    implementation cardView
-    implementation shimmer
-    implementation picasso
-    implementation viewPager
-
-    implementation project(path: ':core')
-    implementation project(path: ':network')
-    
-    testImplementation project(path: ':testutils')
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    AppTheme {
+        Greeting("Android")
+    }
 }

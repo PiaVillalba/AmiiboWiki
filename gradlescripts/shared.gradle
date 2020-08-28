@@ -71,6 +71,11 @@ android {
     kotlinOptions {
         freeCompilerArgs = ["-Xallow-result-return-type", "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi", "-Xopt-in=kotlinx.coroutines.FlowPreview", "-Xopt-in=kotlin.contracts.ExperimentalContracts"]
         jvmTarget = "1.8"
+        useIR = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion "1.0.0-alpha01"
     }
 }
 

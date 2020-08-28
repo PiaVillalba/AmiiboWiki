@@ -10,26 +10,14 @@
  *
  */
 
-apply from: "../gradlescripts/shared.gradle"
+package com.oscarg798.amiibowiki.amiibodetail.ui
 
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Shapes
+import androidx.compose.ui.unit.dp
 
-android {
-
-    packagingOptions {
-        exclude 'META-INF/metadata.kotlin_module'
-    }
-}
-
-dependencies {
-    implementation files('libs/YouTubeAndroidPlayerApi.jar')
-
-    implementation cardView
-    implementation shimmer
-    implementation picasso
-    implementation viewPager
-
-    implementation project(path: ':core')
-    implementation project(path: ':network')
-    
-    testImplementation project(path: ':testutils')
-}
+val shapes = Shapes(
+    small = RoundedCornerShape(4.dp),
+    medium = RoundedCornerShape(4.dp),
+    large = RoundedCornerShape(0.dp)
+)

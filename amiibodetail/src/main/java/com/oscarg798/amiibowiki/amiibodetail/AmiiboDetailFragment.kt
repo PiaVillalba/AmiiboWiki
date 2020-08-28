@@ -13,26 +13,72 @@
 package com.oscarg798.amiibowiki.amiibodetail
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope.gravity
+import androidx.compose.foundation.layout.ConstraintLayout
+import androidx.compose.foundation.layout.ConstraintSet
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.state
+import androidx.compose.runtime.stateFor
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageAsset
+import androidx.compose.ui.graphics.asImageAsset
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.ui.tooling.preview.Preview
+import androidx.compose.foundation.clickable
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.oscarg798.amiibowiki.amiibodetail.databinding.FragmentAmiiboDetailBinding
 import com.oscarg798.amiibowiki.amiibodetail.di.DaggerAmiiboDetailComponent
+import com.oscarg798.amiibowiki.amiibodetail.models.ViewAmiiboDetails
 import com.oscarg798.amiibowiki.amiibodetail.mvi.AmiiboDetailWish
 import com.oscarg798.amiibowiki.amiibodetail.mvi.ShowingAmiiboDetailsParams
+import com.oscarg798.amiibowiki.amiibodetail.ui.AppTheme
+import com.oscarg798.amiibowiki.amiibodetail.ui.purple200
+import com.oscarg798.amiibowiki.amiibodetail.ui.white
 import com.oscarg798.amiibowiki.core.constants.ARGUMENT_TAIL
 import com.oscarg798.amiibowiki.core.di.entrypoints.AmiiboDetailEntryPoint
+import com.oscarg798.amiibowiki.core.di.modules.CoreModule
 import com.oscarg798.amiibowiki.core.extensions.setImage
 import com.oscarg798.amiibowiki.core.extensions.showExpandedImages
 import com.oscarg798.amiibowiki.core.failures.AmiiboDetailFailure
 import com.oscarg798.amiibowiki.searchgamesresults.SearchResultFragment
 import com.oscarg798.amiibowiki.searchgamesresults.models.GameSearchParam
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 import dagger.hilt.android.EntryPointAccessors
 import javax.inject.Inject
 import kotlinx.coroutines.flow.launchIn
@@ -95,7 +141,6 @@ class AmiiboDetailFragment : Fragment() {
                 getString(R.string.search_result_fragment_tag)
             )
             .commit()
-
         ViewCompat.isNestedScrollingEnabled(binding.searchResultFragment)
 
         binding.searchResultFragment.setOnClickListener {
@@ -114,6 +159,8 @@ class AmiiboDetailFragment : Fragment() {
         }.launchIn(lifecycleScope)
 
         viewModel.onWish(AmiiboDetailWish.ShowAmiiboDetail)
+
+
     }
 
 //    override fun onBackPressed() {
@@ -145,14 +192,20 @@ class AmiiboDetailFragment : Fragment() {
         val viewAmiiboDetails = showingAmiiboDetailsParams.amiiboDetails
 //        supportActionBar?.title = viewAmiiboDetails.name
 
-        with(binding) {
-            ivImage.setImage(viewAmiiboDetails.imageUrl)
-            tvGameCharacter.setText(viewAmiiboDetails.character)
-            tvSerie.setText(viewAmiiboDetails.gameSeries)
-            tvType.setText(viewAmiiboDetails.type)
+//        with(binding) {
+//            ivImage.setImage(viewAmiiboDetails.imageUrl)
+//            tvGameCharacter.setText(viewAmiiboDetails.character)
+//            tvSerie.setText(viewAmiiboDetails.gameSeries)
+//            tvType.setText(viewAmiiboDetails.type)
+//
+//            ivImage.setOnClickListener {
+//
+//            }
+//        }
 
-            ivImage.setOnClickListener {
-                viewModel.onWish(AmiiboDetailWish.ExpandAmiiboImage(viewAmiiboDetails.imageUrl))
+        binding.composeView.setContent {
+            MyView(showingAmiiboDetailsParams.amiiboDetails) {
+                viewModel.onWish(AmiiboDetailWish.ExpandAmiiboImage(it))
             }
         }
 
@@ -174,26 +227,103 @@ class AmiiboDetailFragment : Fragment() {
     }
 
     private fun showLoading() {
-        with(binding) {
-            shimmer.root.visibility = View.VISIBLE
-            shimmer.shimmerViewContainer.startShimmer()
-            tvSerieTitle.visibility = View.GONE
-            tvTypeTitle.visibility = View.GONE
-        }
+//        with(binding) {
+//            shimmer.root.visibility = View.VISIBLE
+//            shimmer.shimmerViewContainer.startShimmer()
+//            tvSerieTitle.visibility = View.GONE
+//            tvTypeTitle.visibility = View.GONE
+//        }
     }
 
     private fun hideLoading() {
-        with(binding) {
-            shimmer.root.visibility = View.GONE
-            shimmer.shimmerViewContainer.stopShimmer()
-            tvSerieTitle.visibility = View.VISIBLE
-            tvTypeTitle.visibility = View.VISIBLE
-        }
+//        with(binding) {
+//            shimmer.root.visibility = View.GONE
+//            shimmer.shimmerViewContainer.stopShimmer()
+//            tvSerieTitle.visibility = View.VISIBLE
+//            tvTypeTitle.visibility = View.VISIBLE
+//        }
     }
 
     private fun getSearchResultsFragment(): SearchResultFragment? {
         return childFragmentManager.findFragmentByTag(getString(R.string.search_result_fragment_tag)) as? SearchResultFragment
     }
 }
+
+sealed class Tag {
+    object AmiiboNameTag : Tag()
+}
+
+@Composable
+fun Cover(url: String, onImageClicked: (imageUrl: String) -> Unit = {}) {
+    val image: MutableState<Bitmap?> = state { null }
+
+    val target = object : Target {
+        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+            image.value = bitmap
+        }
+
+        override fun onBitmapFailed() {
+
+        }
+    }
+    CoreModule.picasso.load(url).into(target)
+
+    image.value?.let {
+        Image(
+            asset = it.asImageAsset(),
+            modifier = Modifier.width(250.dp)
+                .padding(top = 16.dp, bottom = 16.dp)
+                .height(250.dp)
+                .gravity(Alignment.CenterHorizontally)
+                .clickable(onClick = {
+                    onImageClicked(url)
+                })
+        )
+    }
+}
+
+@Composable
+fun InformationText(label: String, value: String) {
+    Row(modifier = Modifier.gravity(align = Alignment.Start).padding(top = 8.dp)) {
+        Text(
+            text = label,
+            modifier = Modifier.wrapContentHeight()
+                .wrapContentWidth(),
+            style = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
+        )
+        Text(
+            text = value,
+            modifier = Modifier.wrapContentHeight()
+                .wrapContentWidth(),
+            style = TextStyle(fontSize = 16.sp)
+        )
+    }
+}
+
+@Composable
+fun MyView(viewAmiibo: ViewAmiiboDetails, onImageClicked: (imageUrl: String) -> Unit) {
+    AppTheme {
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            backgroundColor = MaterialTheme.colors.primary,
+            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    viewAmiibo.name,
+                    style = TextStyle(fontWeight = FontWeight.Black, fontSize = 24.sp),
+                    modifier = Modifier.wrapContentHeight()
+                        .wrapContentWidth()
+                        .gravity(align = Alignment.CenterHorizontally)
+                )
+                Cover(url = viewAmiibo.imageUrl, onImageClicked = onImageClicked)
+                InformationText(label = "Game Serie: ", value = viewAmiibo.gameSeries)
+                InformationText(label = "Character: ", value = viewAmiibo.character)
+                InformationText(label = "Type: ", value = viewAmiibo.type)
+            }
+        }
+    }
+}
+
 
 private const val NO_ELEVATION = 0f
